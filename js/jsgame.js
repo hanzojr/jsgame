@@ -7,7 +7,7 @@ var canvas, ctx, ALGURA, LARGURA, frames=0, maxPulos=3, velocidade = 3,
         largura: 50,
         cor: "#ff4e4e",
         gravidade: 1.6,
-        velocidade: 0,
+        velocidade: 2,
         forcaDoPulo: 23.6,
         qtdPulos: 0,
 
@@ -43,6 +43,7 @@ var canvas, ctx, ALGURA, LARGURA, frames=0, maxPulos=3, velocidade = 3,
     obstaculos = {
         _obs: [],
         cores: ["#ffbc1c","#ff1c1c","#ff85e1","52a7ff","#78ff5d"],
+        tempoInsere: 0,
 
 
         insere: function() {
@@ -51,15 +52,26 @@ var canvas, ctx, ALGURA, LARGURA, frames=0, maxPulos=3, velocidade = 3,
                 largura: 30 + Math.floor(21 * Math.random()),
                 altura: 30 + Math.floor(120 * Math.random()),
                 cor: this.cores[Math.floor(5 * Math.random())]
-
             });
+
+            this.tempoInsere = 70 + Math.floor(31 * Math.random());
         },
 
         atualiza: function() {
+            if(this.tempoInsere == 0)
+                this.insere();
+            else   
+                this.tempoInsere--;
+
             for(i = 0, tam = this._obs.length; i< tam; i++) {
                 var obs = this._obs[i];
                 obs.x -= velocidade;
 
+                if(obs.x <= -obs.largura) {
+                    this._obs.splice(i, 1);
+                    tam--;
+                    i--;
+                }
             }
 
         },
