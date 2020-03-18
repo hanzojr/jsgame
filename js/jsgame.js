@@ -1,4 +1,11 @@
-var canvas, ctx, ALGURA, LARGURA, frames=0, maxPulos=3, velocidade = 3,
+var canvas, ctx, ALGURA, LARGURA, frames=0, maxPulos=3, velocidade = 6,
+    estadoAtual,
+
+    estados = {
+        jogar: 0,
+        jogando: 1,
+        perdeu: 2
+    },
 
     bloco = {
         x: 50,
@@ -54,7 +61,7 @@ var canvas, ctx, ALGURA, LARGURA, frames=0, maxPulos=3, velocidade = 3,
                 cor: this.cores[Math.floor(5 * Math.random())]
             });
 
-            this.tempoInsere = 70 + Math.floor(31 * Math.random());
+            this.tempoInsere = 30 + Math.floor(21 * Math.random());
         },
 
         atualiza: function() {
@@ -92,7 +99,7 @@ var canvas, ctx, ALGURA, LARGURA, frames=0, maxPulos=3, velocidade = 3,
     chao = {
         y: 550,
         altura: 50,
-        cor: "#ffdf70",
+        cor: "#e8da78",
 
         desenha: function(){
             ctx.fillStyle = this.cor;
@@ -123,6 +130,8 @@ function main() {
     document.body.appendChild(canvas);
     document.addEventListener("mousedown", clique);
 
+    estadoAtual = estados.jogar;
+
     roda();
 
 }
@@ -143,13 +152,24 @@ function atualiza() {
 }
 
 function desenha() {
-    ctx.fillStyle = "#50beff";
+    ctx.fillStyle = "#80daff";
     ctx.fillRect(0, 0, LARGURA, ALTURA);
 
+    if(estadoAtual == estados.jogar) {
+        ctx.fillStyle = "green";
+        ctx.fillRect(LARGURA / 2 - 50, ALGURA / 2, 100, 100);
+    }
+    else
+        if(estadoAtual = estados.perdeu) {
+            ctx.fillStyle = "red";
+            ctx.fillRect(LARGURA / 2 - 50, ALGURA / 2, 100, 100);            
+        }
+        else
+            if (estadoAtual == estados.jogando)
+                obstaculos.desenha();            
+            
     chao.desenha();
-    obstaculos.desenha();
     bloco.desenha();
-
-
+    
 }
 
